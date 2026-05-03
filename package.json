@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "start": "serve -s dist --listen tcp://0.0.0.0:$PORT"
+    "start": "serve -s dist"
   },
   "dependencies": {
     "serve": "^14.2.6",
