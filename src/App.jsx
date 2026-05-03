@@ -199,52 +199,67 @@ function Navbar({ user, onLogout }) {
 // ================= LOGIN =================
 
 
+
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    try {
-      const res = await axios.post(`${API}/api/auth/login`, {
-        email,
-        password
-      });
-      localStorage.setItem("token", res.data.token);
-      navigate("/dashboard");
-    } catch {
-      alert("Invalid credentials");
-    }
-  };
-
-  return (
-    <div style={styles.loginContainer}>
-      <div style={styles.loginBox}>
-        <h1 style={{ textAlign: "center", fontSize: "36px", marginBottom: "40px" }}>TaskFlow</h1>
-        <h2 style={{ textAlign: "center", marginBottom: "30px" }}>Welcome Back</h2>
-
-        <input 
-          placeholder="Email" 
-          onChange={(e) => setEmail(e.target.value)} 
-          style={styles.input} 
-        />
-        <input 
-          type="password" 
-          placeholder="Password" 
-          onChange={(e) => setPassword(e.target.value)} 
-          style={styles.input} 
-        />
-
-        <button 
-          onClick={handleLogin} 
-          style={{ ...styles.btnPrimary, width: "100%", padding: "14px", fontSize: "16px" }}
-        >
-          Sign In
-        </button>
-      </div>
-    </div>
-  );
+const handleLogin = async () => {
+try {
+const res = await axios.post(`${API}/api/auth/login`, {
+email,
+password
+});
+localStorage.setItem("token", res.data.token);
+navigate("/dashboard");
+} catch {
+alert("Invalid credentials");
 }
+};
+
+return (
+<div style={styles.loginContainer}>
+<div style={styles.loginBox}>
+<h1 style={{ textAlign: "center", fontSize: "36px", marginBottom: "40px" }}>TaskFlow</h1>
+<h2 style={{ textAlign: "center", marginBottom: "30px" }}>Welcome Back</h2>
+
+<input   
+      placeholder="Email"   
+      onChange={(e) => setEmail(e.target.value)}   
+      style={styles.input}   
+    />  
+    <input   
+      type="password"   
+      placeholder="Password"   
+      onChange={(e) => setPassword(e.target.value)}   
+      style={styles.input}   
+    />  
+
+    <button   
+      onClick={handleLogin}   
+      style={{ ...styles.btnPrimary, width: "100%", padding: "14px", fontSize: "16px" }}  
+    >  
+      Sign In  
+    </button>  
+
+    <p style={{ textAlign: "center", marginTop: "15px" }}>
+
+Don't have an account?{" "}
+<span
+style={{ color: "#ff0040", cursor: "pointer" }}
+onClick={() => navigate("/signup")}
+
+> 
+
+Signup
+
+  </span>  
+</p>  
+      </div>  
+    </div>  
+  );  
+}  
 
 // ================= SIGNUP =================
 function Signup() {
