@@ -3,6 +3,10 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-route
 import axios from "axios";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
+
+const API =
+ "https://taskflow-backend-production-7dd4.up.railway.app";
+
 // ================= STYLES =================
 const styles = {
   navbar: {
@@ -193,6 +197,8 @@ function Navbar({ user, onLogout }) {
 }
 
 // ================= LOGIN =================
+
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -200,7 +206,7 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      const res = await axios.post(`${API}/api/auth/login`, {
         email,
         password
       });
@@ -235,16 +241,6 @@ function Login() {
         >
           Sign In
         </button>
-
-        <p style={{ textAlign: "center", marginTop: "15px" }}>
-  Don't have an account?{" "}
-  <span
-    style={{ color: "#ff0040", cursor: "pointer" }}
-    onClick={() => navigate("/signup")}
-  >
-    Signup
-  </span>
-</p>
       </div>
     </div>
   );
@@ -259,7 +255,7 @@ function Signup() {
 
   const handleSignup = async () => {
     try {
-      await axios.post("http://localhost:5000/api/auth/signup", {
+      await axios.post(`${API}/api/auth/signup`, {
         name,
         email,
         password,
@@ -349,8 +345,8 @@ function Dashboard() {
   const user = token ? JSON.parse(atob(token.split(".")[1])) : {};
 
   const fetchTasks = async () => {
-    const res = await axios.get(`http://localhost:5000/api/tasks/${projectId}`, {
-      headers: { Authorization: `Bearer ${token}` }
+  const res = await axios.get(`${API}/api/tasks/${projectId}`, {
+    headers: { Authorization: `Bearer ${token}` }
     });
 
     const grouped = { "To Do": [], "In Progress": [], "Done": [] };
@@ -365,7 +361,7 @@ function Dashboard() {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/auth/users", {
+      const res = await axios.get(`${API}/api/auth/users`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(res.data);
@@ -375,12 +371,12 @@ function Dashboard() {
   };
 
   const fetchStats = async () => {
-    const res = await axios.get(
-      `http://localhost:5000/api/dashboard/${projectId}`,
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    setStats(res.data);
-  };
+  const res = await axios.get(
+    `${API}/api/dashboard/${projectId}`,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  setStats(res.data);
+};
 
   useEffect(() => {
     if (!token) {
@@ -398,48 +394,48 @@ function Dashboard() {
   };
 
   const addMember = async () => {
-    await axios.put(
-      `http://localhost:5000/api/projects/${projectId}/add-member`,
-      { userId: selectedUser },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    alert("Member added");
-  };
+  await axios.put(
+    `${API}/api/projects/${projectId}/add-member`,
+    { userId: selectedUser },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  alert("Member added");
+};
 
   const createTask = async () => {
-    if (isEditing) {
-      await axios.put(
-        `http://localhost:5000/api/tasks/${editTaskId}`,
-        { title, description, assignedTo, priority, dueDate },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-    } else {
-      await axios.post(
-        "http://localhost:5000/api/tasks",
-        { title, description, project: projectId, assignedTo, priority, dueDate },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-    }
+  if (isEditing) {
+    await axios.put(
+      `${API}/api/tasks/${editTaskId}`,
+      { title, description, assignedTo, priority, dueDate },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+  } else {
+    await axios.post(
+      `${API}/api/tasks`,
+      { title, description, project: projectId, assignedTo, priority, dueDate },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+  }
 
-    setShowModal(false);
-    setIsEditing(false);
-    setEditTaskId(null);
-    setTitle("");
-    setDescription("");
-    setAssignedTo("");
-    setDueDate("");
+  setShowModal(false);
+  setIsEditing(false);
+  setEditTaskId(null);
+  setTitle("");
+  setDescription("");
+  setAssignedTo("");
+  setDueDate("");
 
-    fetchTasks();
-    fetchStats();
-  };
+  fetchTasks();
+  fetchStats();
+};
 
   const deleteTask = async (id) => {
-    await axios.delete(`http://localhost:5000/api/tasks/${id}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    fetchTasks();
-    fetchStats();
-  };
+  await axios.delete(`${API}/api/tasks/${id}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  fetchTasks();
+  fetchStats();
+};
 
   const onDragEnd = async (result) => {
     if (!result.destination) return;
@@ -451,10 +447,10 @@ function Dashboard() {
     const task = tasks[source][result.source.index];
 
     await axios.put(
-      `http://localhost:5000/api/tasks/${task._id}`,
-      { status: dest },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
+  `${API}/api/tasks/${task._id}`,
+  { status: dest },
+  { headers: { Authorization: `Bearer ${token}` } }
+);
 
     fetchTasks();
   };
