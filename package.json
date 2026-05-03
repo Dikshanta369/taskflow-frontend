@@ -4,13 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "start": "serve -s dist -l $PORT"
-},
+    "dev": "vite",
+    "build": "vite build",
+    "start": "node server.js"
+  },
   "dependencies": {
     "@hello-pangea/dnd": "^18.0.1",
     "axios": "^1.15.2",
+    "express": "^5.2.1",
     "framer-motion": "^12.38.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
