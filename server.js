@@ -1,15 +1,17 @@
 import express from "express";
 import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const __dirname = new URL('.', import.meta.url).pathname;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// serve static files from dist
+// Serve static files
 app.use(express.static(path.join(__dirname, "dist")));
 
-// fallback to index.html for React routing
+// React fallback
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
